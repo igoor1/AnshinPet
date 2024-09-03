@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -21,10 +21,10 @@ public class Animal {
     private String nome;
     private String sexo;
     private String tipo;
-    private Date data;
+    private LocalDate data;
     private String cor;
     private String porte;
-    private Character castrado;
-    private Character adocao;
+    private String castrado;
+    private String adocao;
     private String raca;
 }

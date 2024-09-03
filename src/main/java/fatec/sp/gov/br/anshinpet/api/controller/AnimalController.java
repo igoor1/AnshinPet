@@ -1,7 +1,10 @@
 package fatec.sp.gov.br.anshinpet.api.controller;
 
+import fatec.sp.gov.br.anshinpet.domain.exception.AnimalNaoEncontradoException;
+import fatec.sp.gov.br.anshinpet.domain.exception.EntidadeNaoEcontradaException;
 import fatec.sp.gov.br.anshinpet.domain.model.Animal;
 import fatec.sp.gov.br.anshinpet.domain.repository.AnimalRepository;
+import fatec.sp.gov.br.anshinpet.domain.service.AnimalService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,47 +15,48 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/animais")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AnimalController {
 
     @Autowired
     private AnimalRepository animalRepository;
+
+    @Autowired
+    private AnimalService animalService;
 
     @GetMapping
     public List<Animal> listar(){
         return animalRepository.findAll();
     }
 
+    @GetMapping("/{animalId}")
+    public Animal buscar(@PathVariable Long animalId){
+        return animalService.buscarOuFalhar(animalId);
+    }
+
+    @GetMapping("/listar/{animalNome}")
+    public ResponseEntity<List<Animal>> buscarPorNome(@PathVariable String animalNome){
+        return ResponseEntity.ok(animalRepository.findByNameContaining(animalNome));
+    }
+
     @PostMapping
-    public ResponseEntity<Animal> adicionar(@RequestBody Animal animal){
-           Animal newAnimal = animalRepository.save(animal);
-           return ResponseEntity.status(HttpStatus.CREATED).body(newAnimal);
+    public Animal adicionar(@RequestBody Animal animal){
+           return animalService.salvar(animal);
     }
 
     @PutMapping("/{animalId}")
-    public ResponseEntity<?> atualizar(@PathVariable Long animalId,@RequestBody Animal animal){
-        try{
-            Animal animalAtual = animalRepository.findById(animalId)
-                    .orElse(null);
+    public Animal atualizar(@PathVariable Long animalId,@RequestBody Animal animal){
 
-            if (animalAtual != null){
-                BeanUtils.copyProperties(animal, animalAtual,"id");
+        Animal animalAtual = animalService.buscarOuFalhar(animalId);
 
-                animalAtual = animalRepository.save(animalAtual);
-                return ResponseEntity.ok(animalAtual);
-            }
+        BeanUtils.copyProperties(animal, animalAtual,"id");
 
-            return ResponseEntity.notFound().build();
-
-        }catch (Exception e){
-            return ResponseEntity.badRequest()
-                    .body(e.getMessage());
-        }
+        return animalService.salvar(animalAtual);
     }
 
     @DeleteMapping("/{animalId}")
-    public ResponseEntity<Animal> deletar(@PathVariable Long animalId){
-            animalRepository.deleteById(animalId);
-            return ResponseEntity.noContent().build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long animalId){
+            animalService.excluir(animalId);
     }
-
 }

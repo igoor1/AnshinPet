@@ -1,7 +1,5 @@
 package fatec.sp.gov.br.anshinpet.api.controller;
 
-import fatec.sp.gov.br.anshinpet.domain.exception.AnimalNaoEncontradoException;
-import fatec.sp.gov.br.anshinpet.domain.exception.EntidadeNaoEcontradaException;
 import fatec.sp.gov.br.anshinpet.domain.model.Animal;
 import fatec.sp.gov.br.anshinpet.domain.repository.AnimalRepository;
 import fatec.sp.gov.br.anshinpet.domain.service.AnimalService;

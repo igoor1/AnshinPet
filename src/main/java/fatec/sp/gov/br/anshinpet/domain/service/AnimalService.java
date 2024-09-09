@@ -1,7 +1,6 @@
 package fatec.sp.gov.br.anshinpet.domain.service;
 
 import fatec.sp.gov.br.anshinpet.domain.exception.AnimalNaoEncontradoException;
-import fatec.sp.gov.br.anshinpet.domain.exception.EntidadeNaoEcontradaException;
 import fatec.sp.gov.br.anshinpet.domain.exception.NegocioException;
 import fatec.sp.gov.br.anshinpet.domain.model.Animal;
 import fatec.sp.gov.br.anshinpet.domain.repository.AnimalRepository;
@@ -12,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AnimalService {
+
+    private static final String MSG_ANIMAL_EM_USO
+            = "Animal de código %d não pode ser removido, pois está em uso";
 
     @Autowired
     private AnimalRepository animalRepository;
@@ -29,7 +31,7 @@ public class AnimalService {
 
         } catch (DataIntegrityViolationException e){
             throw new NegocioException(
-                    String.format("ue",animalId));
+                    String.format(MSG_ANIMAL_EM_USO,animalId));
         }
     }
 

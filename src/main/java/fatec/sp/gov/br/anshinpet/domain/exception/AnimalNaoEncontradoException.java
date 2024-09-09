@@ -1,9 +1,6 @@
 package fatec.sp.gov.br.anshinpet.domain.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-public class AnimalNaoEncontradoException extends EntidadeNaoEcontradaException{
+public class AnimalNaoEncontradoException extends EntidadeNaoEncontradaException {
 
     private  static final long serialVersionUID = 1L;
 
@@ -12,6 +9,6 @@ public class AnimalNaoEncontradoException extends EntidadeNaoEcontradaException{
     }
 
     public AnimalNaoEncontradoException(Long animalId) {
-        this(String.format("animal %d nao cadastrado",animalId));
+        this(String.format("Animal com ID %d não foi encontrado.", animalId));
     }
 }

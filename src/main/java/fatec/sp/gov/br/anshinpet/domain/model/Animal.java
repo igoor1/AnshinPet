@@ -30,4 +30,8 @@ public class Animal {
     @OneToMany(mappedBy = "animal")
     @JsonIgnore
     private Set<AnimalDoenca> doencas;
+
+    @OneToMany(mappedBy = "animal")
+    @JsonIgnore
+    private Set<AnimalVacina> vacina;
 }

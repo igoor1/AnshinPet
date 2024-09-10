@@ -1,14 +1,11 @@
 package fatec.sp.gov.br.anshinpet.domain.model;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -21,4 +18,8 @@ public class Doenca {
 
     private String nome;
     private String gravidade;
+
+    @OneToMany(mappedBy = "doenca")
+    @JsonIgnore
+    private Set<AnimalDoenca> animais;
 }

@@ -26,11 +26,11 @@ public class AnimalVacina {
     @JoinColumn(name = "vacina_id")
     private Vacina vacina;
 
-    public AnimalVacina(Animal animal, Vacina vacina, String lote, LocalDate data){
+    public AnimalVacina(Animal animal, Vacina vacina, String lote, LocalDate dataAplicacao){
         this.animal = animal;
         this.vacina = vacina;
         this.lote = lote;
-        this.dataAplicacao = data;
+        this.dataAplicacao = dataAplicacao;
     }
 
     public AnimalVacina() {}

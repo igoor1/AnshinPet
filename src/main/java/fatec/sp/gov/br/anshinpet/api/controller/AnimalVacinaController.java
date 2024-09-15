@@ -33,6 +33,11 @@ public class AnimalVacinaController {
         return animalVacinaService.buscarOuFalhar(animalVacinaId);
     }
 
+    @GetMapping("/animal/{animalId}")
+    public List<AnimalVacina> buscarPorAnimal(@PathVariable Long animalId){
+        return animalVacinaService.buscarPorAnimal(animalId);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AnimalVacina adicionar(@RequestBody AnimalVacina animalVacina){

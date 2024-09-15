@@ -12,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class AnimalVacinaService {
@@ -54,5 +55,9 @@ public class AnimalVacinaService {
     public AnimalVacina buscarOuFalhar(Long animalVacinaId){
         return animalVacinaRepository.findById(animalVacinaId)
                 .orElseThrow(()-> new VacinaNaoEncontradaException(animalVacinaId));
+    }
+
+    public List<AnimalVacina> buscarPorAnimal(Long animalId){
+        return animalVacinaRepository.findByAnimalId(animalId);
     }
 }

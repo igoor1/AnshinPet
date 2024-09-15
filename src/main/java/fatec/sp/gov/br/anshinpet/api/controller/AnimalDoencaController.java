@@ -39,6 +39,11 @@ public class AnimalDoencaController {
         return animalDoencaService.buscarOuFalhar(animalDoencaId);
     }
 
+    @GetMapping("/animal/{animalId}")
+    public List<AnimalDoenca> buscarPorAnimal(@PathVariable Long animalId){
+        return animalDoencaService.buscarPorAnimal(animalId);
+    }
+
     @PostMapping()
     public AnimalDoenca adicionar(@RequestParam Long animalId, @RequestParam Long doencaId, @RequestParam String status, @RequestParam String descricao){
         Doenca doencaAtual = doencaService.buscarOuFalhar(doencaId);

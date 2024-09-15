@@ -9,6 +9,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AnimalDoencaService {
 
@@ -32,5 +34,9 @@ public class AnimalDoencaService {
     public AnimalDoenca buscarOuFalhar(Long animalDoencaId){
         return animalDoencaRepository.findById(animalDoencaId)
                 .orElseThrow(()-> new AnimalDoencaNaoEncontradoException(animalDoencaId));
+    }
+
+    public List<AnimalDoenca> buscarPorAnimal(Long animalId){
+        return animalDoencaRepository.findByAnimalId(animalId);
     }
 }

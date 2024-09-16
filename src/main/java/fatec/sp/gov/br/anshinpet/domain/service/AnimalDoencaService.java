@@ -2,7 +2,9 @@ package fatec.sp.gov.br.anshinpet.domain.service;
 
 import fatec.sp.gov.br.anshinpet.domain.exception.NegocioException;
 import fatec.sp.gov.br.anshinpet.domain.exception.animalDoenca.AnimalDoencaNaoEncontradoException;
+import fatec.sp.gov.br.anshinpet.domain.model.Animal;
 import fatec.sp.gov.br.anshinpet.domain.model.AnimalDoenca;
+import fatec.sp.gov.br.anshinpet.domain.model.Doenca;
 import fatec.sp.gov.br.anshinpet.domain.repository.AnimalDoencaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,8 +19,32 @@ public class AnimalDoencaService {
     @Autowired
     private AnimalDoencaRepository animalDoencaRepository;
 
+    @Autowired
+    private AnimalService animalService;
+
+    @Autowired
+    private DoencaService doencaService;
+
+    public List<AnimalDoenca> listar(){
+        return animalDoencaRepository.findAll();
+    }
+
     public AnimalDoenca salvar(AnimalDoenca animalDoenca){
         return animalDoencaRepository.save(animalDoenca);
+    }
+
+    public AnimalDoenca adicionar(AnimalDoenca animalDoenca){
+
+        Long animalId = animalDoenca.getAnimal().getId();
+        Long doencaId = animalDoenca.getDoenca().getId();
+        String status = animalDoenca.getStatus();
+        String descricao = animalDoenca.getDescricao();
+
+        Animal animal = animalService.buscarOuFalhar(animalId);
+        Doenca doenca = doencaService.buscarOuFalhar(doencaId);
+
+        AnimalDoenca addAnimalDoenca = new AnimalDoenca(animal, doenca, status, descricao);
+        return animalDoencaRepository.save(addAnimalDoenca);
     }
 
     public void excluir (Long animalDoencaId){
@@ -26,8 +52,8 @@ public class AnimalDoencaService {
             animalDoencaRepository.deleteById(animalDoencaId);
         }catch (EmptyResultDataAccessException e){
             throw new AnimalDoencaNaoEncontradoException(animalDoencaId);
-        }catch (DataIntegrityViolationException e){
-            throw new NegocioException(String.format("ue", animalDoencaId));
+        }catch (DataIntegrityViolationException e ){
+            throw new NegocioException("AnimalDoença não pode ser removido, pois está em uso.");
         }
     }
 

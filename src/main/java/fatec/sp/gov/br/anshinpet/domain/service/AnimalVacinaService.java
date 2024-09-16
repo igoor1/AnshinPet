@@ -10,6 +10,7 @@ import fatec.sp.gov.br.anshinpet.domain.repository.AnimalVacinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,10 +30,12 @@ public class AnimalVacinaService {
         return animalVacinaRepository.findAll();
     }
 
+    @Transactional
     public AnimalVacina salvar(AnimalVacina animalVacina){
         return animalVacinaRepository.save(animalVacina);
     }
 
+    @Transactional
     public AnimalVacina adicionar(AnimalVacina animalVacina){
 
         Long animalId = animalVacina.getAnimal().getId();
@@ -48,6 +51,7 @@ public class AnimalVacinaService {
         return animalVacinaRepository.save(cadAplicacao);
     }
 
+    @Transactional
     public void excluir(Long animalVacinaId){
       try {
           animalVacinaRepository.deleteById(animalVacinaId);

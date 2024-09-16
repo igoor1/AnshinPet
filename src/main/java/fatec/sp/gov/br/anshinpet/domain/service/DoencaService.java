@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,10 +22,13 @@ public class DoencaService {
         return doencaRepository.findAll();
     }
 
+    @Transactional
     public Doenca salvar(Doenca doenca){
         return doencaRepository.save(doenca);
     }
 
+
+    @Transactional
     public void excluir (Long doencaId){
         try{
             doencaRepository.deleteById(doencaId);

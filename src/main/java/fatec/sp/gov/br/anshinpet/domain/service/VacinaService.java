@@ -6,6 +6,8 @@ import fatec.sp.gov.br.anshinpet.domain.repository.VacinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 
@@ -19,10 +21,12 @@ public class VacinaService {
         return vacinaRepository.findAll();
     }
 
+    @Transactional
     public Vacina salvar(Vacina vacina){
         return vacinaRepository.save(vacina);
     }
 
+    @Transactional
     public void excluir(Long vacinaId){
         try{
             vacinaRepository.deleteById(vacinaId);

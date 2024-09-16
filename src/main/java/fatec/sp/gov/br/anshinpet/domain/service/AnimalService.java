@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,10 +25,12 @@ public class AnimalService {
         return animalRepository.findAll();
     }
 
+    @Transactional
     public Animal salvar(Animal animal){
         return animalRepository.save(animal);
     }
 
+    @Transactional
     public void excluir(Long animalId){
         try{
             animalRepository.deleteById(animalId);

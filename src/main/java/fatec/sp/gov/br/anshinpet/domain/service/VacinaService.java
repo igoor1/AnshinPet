@@ -7,11 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class VacinaService {
 
     @Autowired
     private VacinaRepository vacinaRepository;
+
+    public List<Vacina> listar(){
+        return vacinaRepository.findAll();
+    }
 
     public Vacina salvar(Vacina vacina){
         return vacinaRepository.save(vacina);

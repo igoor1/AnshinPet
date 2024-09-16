@@ -1,8 +1,6 @@
 package fatec.sp.gov.br.anshinpet.api.controller;
 
-import fatec.sp.gov.br.anshinpet.domain.model.Animal;
 import fatec.sp.gov.br.anshinpet.domain.model.Vacina;
-import fatec.sp.gov.br.anshinpet.domain.repository.VacinaRepository;
 import fatec.sp.gov.br.anshinpet.domain.service.VacinaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +18,9 @@ public class VacinaController {
     @Autowired
     private VacinaService vacinaService;
 
-    @Autowired
-    private VacinaRepository vacinaRepository;
-
     @GetMapping
     public List<Vacina> listar(){
-        return vacinaRepository.findAll();
+        return vacinaService.listar();
     }
 
     @GetMapping("/{vacinaId}")

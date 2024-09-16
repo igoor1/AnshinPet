@@ -25,6 +25,10 @@ public class AnimalVacinaService {
 
     @Autowired VacinaService vacinaService;
 
+    public List<AnimalVacina> listar(){
+        return animalVacinaRepository.findAll();
+    }
+
     public AnimalVacina salvar(AnimalVacina animalVacina){
         return animalVacinaRepository.save(animalVacina);
     }

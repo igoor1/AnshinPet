@@ -16,16 +16,12 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class AnimalVacinaController {
 
-
-    @Autowired
-    private AnimalVacinaRepository animalVacinaRepository;
-
     @Autowired
     private AnimalVacinaService animalVacinaService;
 
     @GetMapping
     public List<AnimalVacina> listar(){
-        return animalVacinaRepository.findAll();
+        return animalVacinaService.listar();
     }
 
     @GetMapping("/{animalVacinaId}")

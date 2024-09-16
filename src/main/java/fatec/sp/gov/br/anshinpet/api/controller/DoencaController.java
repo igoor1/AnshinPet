@@ -1,7 +1,6 @@
 package fatec.sp.gov.br.anshinpet.api.controller;
 
 import fatec.sp.gov.br.anshinpet.domain.model.Doenca;
-import fatec.sp.gov.br.anshinpet.domain.repository.DoencaRepository;
 import fatec.sp.gov.br.anshinpet.domain.service.DoencaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +15,15 @@ import java.util.List;
 public class DoencaController {
 
     @Autowired
-    private DoencaRepository doencaRepository;
-
-    @Autowired
     private DoencaService doencaService;
 
     @GetMapping
     public List<Doenca> listar(){
-        return doencaRepository.findAll();
+        return doencaService.listar();
     }
 
     @GetMapping("/{doencaId}")
-    public Doenca buscar(@PathVariable long doencaId){
+    public Doenca buscar(@PathVariable Long doencaId){
         return doencaService.buscarOuFalhar(doencaId);
     }
 

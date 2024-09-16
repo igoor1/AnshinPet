@@ -1,7 +1,6 @@
 package fatec.sp.gov.br.anshinpet.api.controller;
 
 import fatec.sp.gov.br.anshinpet.domain.model.Animal;
-import fatec.sp.gov.br.anshinpet.domain.repository.AnimalRepository;
 import fatec.sp.gov.br.anshinpet.domain.service.AnimalService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +16,11 @@ import java.util.List;
 public class AnimalController {
 
     @Autowired
-    private AnimalRepository animalRepository;
-
-    @Autowired
     private AnimalService animalService;
 
     @GetMapping
     public List<Animal> listar(){
-        return animalRepository.findAll();
+        return animalService.listar();
     }
 
     @GetMapping("/{animalId}")
@@ -34,7 +30,7 @@ public class AnimalController {
 
     @GetMapping("/listar/{animalNome}")
     public ResponseEntity<List<Animal>> buscarPorNome(@PathVariable String animalNome){
-        return ResponseEntity.ok(animalRepository.findByNameContaining(animalNome));
+        return ResponseEntity.ok(animalService.buscarPorNome(animalNome));
     }
 
     @PostMapping

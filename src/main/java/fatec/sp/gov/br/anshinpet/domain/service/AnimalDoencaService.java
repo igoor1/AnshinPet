@@ -51,9 +51,26 @@ public class AnimalDoencaService {
     }
 
     @Transactional
+    public AnimalDoenca atualizar(Long animalDoencaId, AnimalDoenca animalDoenca) {
+
+        AnimalDoenca animalDoencaAtual = buscarOuFalhar(animalDoencaId);
+
+        Animal animal = animalService.buscarOuFalhar(animalDoenca.getAnimal().getId());
+        Doenca doenca = doencaService.buscarOuFalhar(animalDoenca.getDoenca().getId());
+
+        animalDoencaAtual.setAnimal(animal);
+        animalDoencaAtual.setDoenca(doenca);
+        animalDoencaAtual.setStatus(animalDoenca.getStatus());
+        animalDoencaAtual.setDescricao(animalDoenca.getDescricao());
+
+        return salvar(animalDoencaAtual);
+    }
+
+    @Transactional
     public void excluir (Long animalDoencaId){
         try{
             animalDoencaRepository.deleteById(animalDoencaId);
+            animalDoencaRepository.flush();
         }catch (EmptyResultDataAccessException e){
             throw new AnimalDoencaNaoEncontradoException(animalDoencaId);
         }catch (DataIntegrityViolationException e ){

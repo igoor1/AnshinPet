@@ -1,8 +1,12 @@
 package fatec.sp.gov.br.anshinpet.api.controller;
 
+import fatec.sp.gov.br.anshinpet.api.assembler.AnimalDoencaInputDisassembler;
+import fatec.sp.gov.br.anshinpet.api.assembler.AnimalDoencaModelAssembler;
+import fatec.sp.gov.br.anshinpet.api.model.AnimalDoencaModel;
+import fatec.sp.gov.br.anshinpet.api.model.input.AnimalDoencaInput;
 import fatec.sp.gov.br.anshinpet.domain.model.AnimalDoenca;
 import fatec.sp.gov.br.anshinpet.domain.service.AnimalDoencaService;
-import org.springframework.beans.BeanUtils;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,35 +21,45 @@ public class AnimalDoencaController {
     @Autowired
     private AnimalDoencaService animalDoencaService;
 
+    @Autowired
+    private AnimalDoencaModelAssembler animalDoencaModelAssembler;
+
+    @Autowired
+    private AnimalDoencaInputDisassembler animalDoencaInputDisassembler;
+
     @GetMapping
-    public List<AnimalDoenca> listar(){
-        return animalDoencaService.listar();
+    public List<AnimalDoencaModel> listar(){
+        List<AnimalDoenca> animalDoencas = animalDoencaService.listar();
+        return animalDoencaModelAssembler.toCollectionModel(animalDoencas);
     }
 
     @GetMapping("/{animalDoencaId}")
-    public AnimalDoenca buscar(@PathVariable long animalDoencaId){
-        return animalDoencaService.buscarOuFalhar(animalDoencaId);
+    public AnimalDoencaModel buscar(@PathVariable long animalDoencaId){
+        AnimalDoenca animalDoenca = animalDoencaService.buscarOuFalhar(animalDoencaId);
+        return animalDoencaModelAssembler.toModel(animalDoenca);
     }
 
     @GetMapping("/animal/{animalId}")
-    public List<AnimalDoenca> buscarPorAnimal(@PathVariable Long animalId){
-        return animalDoencaService.buscarPorAnimal(animalId);
+    public List<AnimalDoencaModel> buscarPorAnimal(@PathVariable Long animalId){
+        List<AnimalDoenca> animalDoenca = animalDoencaService.buscarPorAnimal(animalId);
+        return animalDoencaModelAssembler.toCollectionModel(animalDoenca);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AnimalDoenca adicionar(@RequestBody AnimalDoenca animalDoenca){
-        return animalDoencaService.adicionar(animalDoenca);
+    public AnimalDoencaModel adicionar(@RequestBody @Valid AnimalDoencaInput animalDoencaInput){
+        AnimalDoenca animalDoenca = animalDoencaInputDisassembler.toDomainObject(animalDoencaInput);
+        animalDoenca = animalDoencaService.adicionar(animalDoenca);
+        return animalDoencaModelAssembler.toModel(animalDoenca);
     }
 
     @PutMapping("/{animalDoencaId}")
-    public AnimalDoenca atualizar(@PathVariable Long animalDoencaId, @RequestBody AnimalDoenca animalDoenca){
+    public AnimalDoencaModel atualizar(@PathVariable Long animalDoencaId,
+                                       @RequestBody @Valid AnimalDoencaInput animalDoencaInput){
 
-        AnimalDoenca animalDoencalAtual = buscar(animalDoencaId);
-
-        BeanUtils.copyProperties(animalDoenca, animalDoencalAtual, "id");
-
-        return animalDoencaService.salvar(animalDoencalAtual);
+        AnimalDoenca animalDoencaAtualizada = animalDoencaInputDisassembler.toDomainObject(animalDoencaInput);
+        animalDoencaAtualizada = animalDoencaService.atualizar(animalDoencaId, animalDoencaAtualizada);
+        return animalDoencaModelAssembler.toModel(animalDoencaAtualizada);
     }
 
     @DeleteMapping("/{animalDoencaId}")

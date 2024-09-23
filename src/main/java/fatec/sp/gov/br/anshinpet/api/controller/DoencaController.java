@@ -1,9 +1,12 @@
 package fatec.sp.gov.br.anshinpet.api.controller;
 
+import fatec.sp.gov.br.anshinpet.api.assembler.DoencaInputDisassembler;
+import fatec.sp.gov.br.anshinpet.api.assembler.DoencaModelAssembler;
+import fatec.sp.gov.br.anshinpet.api.model.DoencaModel;
+import fatec.sp.gov.br.anshinpet.api.model.input.DoencaInput;
 import fatec.sp.gov.br.anshinpet.domain.model.Doenca;
-import fatec.sp.gov.br.anshinpet.domain.repository.DoencaRepository;
 import fatec.sp.gov.br.anshinpet.domain.service.DoencaService;
-import org.springframework.beans.BeanUtils;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,34 +19,39 @@ import java.util.List;
 public class DoencaController {
 
     @Autowired
-    private DoencaRepository doencaRepository;
-
-    @Autowired
     private DoencaService doencaService;
 
+    @Autowired
+    private DoencaModelAssembler doencaModelAssembler;
+
+    @Autowired
+    private DoencaInputDisassembler doencaInputDisassembler;
+
     @GetMapping
-    public List<Doenca> listar(){
-        return doencaRepository.findAll();
+    public List<DoencaModel> listar(){
+        List<Doenca> doencas = doencaService.listar();
+        return doencaModelAssembler.toCollectionModel(doencas);
     }
 
     @GetMapping("/{doencaId}")
-    public Doenca buscar(@PathVariable long doencaId){
-        return doencaService.buscarOuFalhar(doencaId);
+    public DoencaModel buscar(@PathVariable Long doencaId){
+        Doenca doenca = doencaService.buscarOuFalhar(doencaId);
+        return doencaModelAssembler.toModel(doenca);
     }
 
     @PostMapping
-    public Doenca adicionar(@RequestBody Doenca doenca){
-        return doencaService.salvar(doenca);
+    public DoencaModel adicionar(@RequestBody @Valid DoencaInput doencaInput){
+        Doenca doenca = doencaInputDisassembler.toDomainObject(doencaInput);
+        doenca = doencaService.salvar(doenca);
+        return doencaModelAssembler.toModel(doenca);
     }
 
     @PutMapping("/{doencaId}")
-    public Doenca atualizar(@PathVariable Long doencaId, @RequestBody Doenca doenca){
-
+    public DoencaModel atualizar(@PathVariable Long doencaId, @RequestBody @Valid DoencaInput doencaInput){
         Doenca doencaAtual = doencaService.buscarOuFalhar(doencaId);
-
-        BeanUtils.copyProperties(doenca, doencaAtual, "id");
-
-        return doencaService.salvar(doencaAtual);
+        doencaInputDisassembler.copyToDomainObject(doencaInput, doencaAtual);
+        doencaAtual = doencaService.salvar(doencaAtual);
+        return doencaModelAssembler.toModel(doencaAtual);
     }
 
     @DeleteMapping("/{doencaId}")

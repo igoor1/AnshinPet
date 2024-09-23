@@ -1,12 +1,12 @@
 package fatec.sp.gov.br.anshinpet.api.controller;
 
+import fatec.sp.gov.br.anshinpet.api.assembler.AnimalDoencaInputDisassembler;
+import fatec.sp.gov.br.anshinpet.api.assembler.AnimalDoencaModelAssembler;
+import fatec.sp.gov.br.anshinpet.api.model.AnimalDoencaModel;
+import fatec.sp.gov.br.anshinpet.api.model.input.AnimalDoencaInput;
 import fatec.sp.gov.br.anshinpet.domain.model.AnimalDoenca;
-import fatec.sp.gov.br.anshinpet.domain.model.Doenca;
-import fatec.sp.gov.br.anshinpet.domain.model.Animal;
-import fatec.sp.gov.br.anshinpet.domain.repository.AnimalDoencaRepository;
 import fatec.sp.gov.br.anshinpet.domain.service.AnimalDoencaService;
-import fatec.sp.gov.br.anshinpet.domain.service.AnimalService;
-import fatec.sp.gov.br.anshinpet.domain.service.DoencaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,60 +14,52 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/animalDoenca")
+@RequestMapping("/animal-doencas")
 @CrossOrigin(origins = "http://localhost:5173")
 public class AnimalDoencaController {
-    @Autowired
-    private AnimalDoencaRepository animalDoencaRepository;
 
     @Autowired
     private AnimalDoencaService animalDoencaService;
 
     @Autowired
-    private AnimalService animalService;
+    private AnimalDoencaModelAssembler animalDoencaModelAssembler;
 
     @Autowired
-    private DoencaService doencaService;
+    private AnimalDoencaInputDisassembler animalDoencaInputDisassembler;
 
     @GetMapping
-    public List<AnimalDoenca> listar(){
-        return animalDoencaRepository.findAll();
+    public List<AnimalDoencaModel> listar(){
+        List<AnimalDoenca> animalDoencas = animalDoencaService.listar();
+        return animalDoencaModelAssembler.toCollectionModel(animalDoencas);
     }
 
     @GetMapping("/{animalDoencaId}")
-    public AnimalDoenca buscar(@PathVariable long animalDoencaId){
-        return animalDoencaService.buscarOuFalhar(animalDoencaId);
+    public AnimalDoencaModel buscar(@PathVariable long animalDoencaId){
+        AnimalDoenca animalDoenca = animalDoencaService.buscarOuFalhar(animalDoencaId);
+        return animalDoencaModelAssembler.toModel(animalDoenca);
     }
 
     @GetMapping("/animal/{animalId}")
-    public List<AnimalDoenca> buscarPorAnimal(@PathVariable Long animalId){
-        return animalDoencaService.buscarPorAnimal(animalId);
+    public List<AnimalDoencaModel> buscarPorAnimal(@PathVariable Long animalId){
+        List<AnimalDoenca> animalDoenca = animalDoencaService.buscarPorAnimal(animalId);
+        return animalDoencaModelAssembler.toCollectionModel(animalDoenca);
     }
 
-    @PostMapping()
-    public AnimalDoenca adicionar(@RequestParam Long animalId, @RequestParam Long doencaId, @RequestParam String status, @RequestParam String descricao){
-        Doenca doencaAtual = doencaService.buscarOuFalhar(doencaId);
-        Animal animalAtual = animalService.buscarOuFalhar(animalId);
-
-        AnimalDoenca animalDoenca = new AnimalDoenca(animalAtual, doencaAtual, status, descricao);
-
-        return animalDoencaService.salvar(animalDoenca);
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public AnimalDoencaModel adicionar(@RequestBody @Valid AnimalDoencaInput animalDoencaInput){
+        AnimalDoenca animalDoenca = animalDoencaInputDisassembler.toDomainObject(animalDoencaInput);
+        animalDoenca = animalDoencaService.adicionar(animalDoenca);
+        return animalDoencaModelAssembler.toModel(animalDoenca);
     }
 
     @PutMapping("/{animalDoencaId}")
-    public AnimalDoenca atualizar(@PathVariable Long animalDoencaId, @RequestParam Long animalId, @RequestParam Long doencaId, @RequestParam String status, @RequestParam String descricao){
-        AnimalDoenca animalDoencalAtual = animalDoencaService.buscarOuFalhar(animalDoencaId);
+    public AnimalDoencaModel atualizar(@PathVariable Long animalDoencaId,
+                                       @RequestBody @Valid AnimalDoencaInput animalDoencaInput){
 
-        Animal novoAnimal = animalService.buscarOuFalhar(animalId);
-        Doenca novaDoenca = doencaService.buscarOuFalhar(doencaId);
-
-        animalDoencalAtual.setAnimal(novoAnimal);
-        animalDoencalAtual.setDoenca(novaDoenca);
-
-        animalDoencalAtual.setStatus(status);
-        animalDoencalAtual.setDescricao(descricao);
-
-        return animalDoencaService.salvar(animalDoencalAtual);
+        AnimalDoenca animalDoencaAtualizada = animalDoencaInputDisassembler.toDomainObject(animalDoencaInput);
+        animalDoencaAtualizada = animalDoencaService.atualizar(animalDoencaId, animalDoencaAtualizada);
+        return animalDoencaModelAssembler.toModel(animalDoencaAtualizada);
     }
 
     @DeleteMapping("/{animalDoencaId}")

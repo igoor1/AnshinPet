@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class AnimalService {
@@ -18,10 +21,16 @@ public class AnimalService {
     @Autowired
     private AnimalRepository animalRepository;
 
+    public List<Animal> listar(){
+        return animalRepository.findAll();
+    }
+
+    @Transactional
     public Animal salvar(Animal animal){
         return animalRepository.save(animal);
     }
 
+    @Transactional
     public void excluir(Long animalId){
         try{
             animalRepository.deleteById(animalId);
@@ -33,6 +42,10 @@ public class AnimalService {
             throw new NegocioException(
                     String.format(MSG_ANIMAL_EM_USO,animalId));
         }
+    }
+
+    public List<Animal> buscarPorNome(String animalNome){
+        return animalRepository.findByNameContaining(animalNome);
     }
 
     public Animal buscarOuFalhar(Long animalId){

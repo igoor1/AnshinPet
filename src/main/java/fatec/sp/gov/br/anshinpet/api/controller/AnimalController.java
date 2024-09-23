@@ -1,9 +1,12 @@
 package fatec.sp.gov.br.anshinpet.api.controller;
 
+import fatec.sp.gov.br.anshinpet.api.assembler.AnimalModelAssembler;
+import fatec.sp.gov.br.anshinpet.api.assembler.AnimalInputDisassembler;
+import fatec.sp.gov.br.anshinpet.api.model.AnimalModel;
+import fatec.sp.gov.br.anshinpet.api.model.input.AnimalInput;
 import fatec.sp.gov.br.anshinpet.domain.model.Animal;
-import fatec.sp.gov.br.anshinpet.domain.repository.AnimalRepository;
 import fatec.sp.gov.br.anshinpet.domain.service.AnimalService;
-import org.springframework.beans.BeanUtils;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,39 +20,42 @@ import java.util.List;
 public class AnimalController {
 
     @Autowired
-    private AnimalRepository animalRepository;
-
-    @Autowired
     private AnimalService animalService;
 
+    @Autowired
+    private AnimalModelAssembler animalModelAssembler;
+
+    @Autowired
+    private AnimalInputDisassembler animalInputDisassembler;
+
     @GetMapping
-    public List<Animal> listar(){
-        return animalRepository.findAll();
+    public List<AnimalModel> listar(){
+        return animalModelAssembler.toCollectionModel(animalService.listar());
     }
 
     @GetMapping("/{animalId}")
-    public Animal buscar(@PathVariable Long animalId){
-        return animalService.buscarOuFalhar(animalId);
+    public AnimalModel buscar(@PathVariable Long animalId){
+        Animal animal = animalService.buscarOuFalhar(animalId);
+        return animalModelAssembler.toModel(animal);
     }
 
     @GetMapping("/listar/{animalNome}")
-    public ResponseEntity<List<Animal>> buscarPorNome(@PathVariable String animalNome){
-        return ResponseEntity.ok(animalRepository.findByNameContaining(animalNome));
+    public ResponseEntity<List<AnimalModel>> buscarPorNome(@PathVariable String animalNome){
+        List<Animal> animal = animalService.buscarPorNome(animalNome);
+        return ResponseEntity.ok(animalModelAssembler.toCollectionModel(animal));
     }
 
     @PostMapping
-    public Animal adicionar(@RequestBody Animal animal){
-           return animalService.salvar(animal);
+    public AnimalModel adicionar(@RequestBody @Valid AnimalInput animalInput){
+        Animal animal = animalInputDisassembler.toDomainObject(animalInput);
+           return animalModelAssembler.toModel(animalService.salvar(animal));
     }
 
     @PutMapping("/{animalId}")
-    public Animal atualizar(@PathVariable Long animalId,@RequestBody Animal animal){
-
+    public AnimalModel atualizar(@PathVariable Long animalId, @RequestBody @Valid AnimalInput animalInput){
         Animal animalAtual = animalService.buscarOuFalhar(animalId);
-
-        BeanUtils.copyProperties(animal, animalAtual,"id");
-
-        return animalService.salvar(animalAtual);
+        animalInputDisassembler.copyToDomainObject(animalInput, animalAtual);
+        return animalModelAssembler.toModel(animalService.salvar(animalAtual));
     }
 
     @DeleteMapping("/{animalId}")

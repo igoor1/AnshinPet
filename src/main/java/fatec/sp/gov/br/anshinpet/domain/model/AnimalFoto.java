@@ -15,11 +15,18 @@ public class AnimalFoto {
     private Long id;
 
     private String nomeArquivo;
-    private String desc;
+    private String descricao;
     private String contentType;
     private Long tamanho;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
     private Animal animal;
+
+    public Long GetAnimalId(){
+        if(getAnimal() != null){
+            return animal.getId();
+        }
+        return null;
+    }
 }

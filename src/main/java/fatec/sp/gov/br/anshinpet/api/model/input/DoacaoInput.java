@@ -15,10 +15,10 @@ public class DoacaoInput {
     @NotBlank
     private String tipo;
 
-    @Null
+
     private BigDecimal valor;
 
-    @Null
+
     private Integer quantidade;
 
     @NotBlank

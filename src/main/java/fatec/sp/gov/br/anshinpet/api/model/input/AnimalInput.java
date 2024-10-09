@@ -19,7 +19,7 @@ public class AnimalInput {
     @NotBlank
     private String tipo;
 
-    @FutureOrPresent
+    @PastOrPresent
     private LocalDate data;
 
     @NotBlank

@@ -27,11 +27,11 @@ public class Animal {
     private String adocao;
     private String raca;
 
-    @OneToMany(mappedBy = "animal")
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<AnimalDoenca> doencas;
 
-    @OneToMany(mappedBy = "animal")
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<AnimalVacina> vacina;
 }

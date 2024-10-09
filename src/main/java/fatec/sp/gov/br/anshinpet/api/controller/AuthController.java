@@ -8,6 +8,7 @@ import fatec.sp.gov.br.anshinpet.domain.service.AuthService;
 import fatec.sp.gov.br.anshinpet.domain.service.TokenService;
 import jakarta.validation.Valid;
 import org.apache.coyote.http11.upgrade.UpgradeServletOutputStream;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,10 +40,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid UsuarioInput usuarioInput){
-        if (authService.buscarPorEmail(usuarioInput.getEmail()) != null) {
-            return ResponseEntity.badRequest().body("Email já cadastrado.");
-        }
+    public ResponseEntity register(@RequestBody @Valid UsuarioInput usuarioInput) throws AuthenticationException {
         authService.cadastrar(usuarioInput);
         return ResponseEntity.ok().build();
     }

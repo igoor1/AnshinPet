@@ -25,15 +25,13 @@ public class AuthService implements UserDetailsService {
         return usuarioRepository.findByEmail(username);
     }
 
-    public List<Usuario> buscarPorEmail(String email){
-        return (List<Usuario>) usuarioRepository.findByEmail(email);
-    }
-
     @Transactional
     public Usuario cadastrar( UsuarioInput usuarioInput){
+        if(emailExistente(usuarioInput.getEmail())){
+            throw new IllegalArgumentException("Este email já esta cadastrado!");
+        }
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(usuarioInput.getSenha());
-        //Usuario newUsuario = new Usuario(usuarioInput.getEmail(), encryptedPassword, usuarioInput.getRole());
 
         Usuario newUsuario = new Usuario();
         newUsuario.setNome(usuarioInput.getNome());
@@ -46,4 +44,9 @@ public class AuthService implements UserDetailsService {
 
         return usuarioRepository.save(newUsuario);
     }
+
+    public boolean emailExistente(String email) {
+        return usuarioRepository.findUsuarioByEmail(email).isPresent();
+    }
+
 }

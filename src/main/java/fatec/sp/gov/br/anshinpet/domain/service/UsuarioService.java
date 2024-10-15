@@ -18,6 +18,9 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private UsuarioFotoService usuarioFotoService;
+
     public List<Usuario> listar(){
         return usuarioRepository.findAll();
     }
@@ -29,7 +32,12 @@ public class UsuarioService {
     @Transactional
     public void excluir(Long usuarioId) {
         try {
+            var foto = usuarioFotoService.buscarOuFalhar(usuarioId);
+            if (foto != null) {
+                usuarioFotoService.excluir(usuarioId);
+            }
             usuarioRepository.deleteById(usuarioId);
+
         } catch (EmptyResultDataAccessException e) {
             throw new UsuarioNaoEncontradoException(usuarioId);
         } catch (DataIntegrityViolationException e) {

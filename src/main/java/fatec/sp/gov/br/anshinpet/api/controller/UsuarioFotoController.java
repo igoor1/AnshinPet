@@ -1,14 +1,13 @@
 package fatec.sp.gov.br.anshinpet.api.controller;
 
-import fatec.sp.gov.br.anshinpet.api.assembler.AnimalFotoModelAssembler;
-import fatec.sp.gov.br.anshinpet.api.dto.AnimalFotoDTO;
+import fatec.sp.gov.br.anshinpet.api.assembler.UsuarioFotoModelAssembler;
+import fatec.sp.gov.br.anshinpet.api.dto.UsuarioFotoDTO;
 import fatec.sp.gov.br.anshinpet.api.dto.input.FotoInput;
 import fatec.sp.gov.br.anshinpet.domain.exception.EntidadeNaoEncontradaException;
-import fatec.sp.gov.br.anshinpet.domain.model.Animal;
-import fatec.sp.gov.br.anshinpet.domain.model.AnimalFoto;
-import fatec.sp.gov.br.anshinpet.domain.service.AnimalFotoService;
-import fatec.sp.gov.br.anshinpet.domain.service.AnimalService;
-import fatec.sp.gov.br.anshinpet.domain.service.FotoStorageService;
+import fatec.sp.gov.br.anshinpet.domain.model.Usuario;
+import fatec.sp.gov.br.anshinpet.domain.model.UsuarioFoto;
+import fatec.sp.gov.br.anshinpet.domain.service.UsuarioFotoService;
+import fatec.sp.gov.br.anshinpet.domain.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -24,40 +23,36 @@ import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/animais/{animalId}/foto")
-public class AnimalFotoController {
+@RequestMapping("/api/usuarios/{usuarioId}/foto")
+public class UsuarioFotoController {
 
     @Autowired
-    private AnimalService animalService;
+    private UsuarioService usuarioService;
 
     @Autowired
-    private AnimalFotoService animalFotoService;
+    private UsuarioFotoService usuarioFotoService;
 
     @Autowired
-    private AnimalFotoModelAssembler animalFotoAssembler;
-
-    @Autowired
-    private FotoStorageService fotoStorage;
+    private UsuarioFotoModelAssembler usuarioFotoAssembler;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public AnimalFotoDTO buscar(@PathVariable Long animalId){
-        AnimalFoto animalFoto = animalFotoService.buscarOuFalhar(animalId);
-        return animalFotoAssembler.toModel(animalFoto);
+    public UsuarioFotoDTO buscar(@PathVariable Long usuarioId){
+        UsuarioFoto usuarioFoto = usuarioFotoService.buscarOuFalhar(usuarioId);
+        return usuarioFotoAssembler.toModel(usuarioFoto);
     }
 
     @GetMapping
-    public ResponseEntity<InputStreamResource> servir(@PathVariable Long animalId,
-            @RequestHeader(name = "Accept") String acceptHeader ) throws  HttpMediaTypeNotAcceptableException{
+    public ResponseEntity<InputStreamResource> servir(@PathVariable Long usuarioId,
+                                                      @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 
         try {
-            AnimalFoto animalFoto = animalFotoService.buscarOuFalhar(animalId);
+            UsuarioFoto usuarioFoto = usuarioFotoService.buscarOuFalhar(usuarioId);
 
-            MediaType mediaTypeFoto = MediaType.parseMediaType(animalFoto.getContentType());
+            MediaType mediaTypeFoto = MediaType.parseMediaType(usuarioFoto.getContentType());
             List<MediaType> mediaTypeAceitas = MediaType.parseMediaTypes(acceptHeader);
             verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypeAceitas);
 
-
-            InputStream inputStream = fotoStorage.recuperar(animalFoto.getNomeArquivo());
+            InputStream inputStream = usuarioFotoService.pegar(usuarioFoto.getNomeArquivo());
             return ResponseEntity.ok().contentType(mediaTypeFoto)
                     .body(new InputStreamResource(inputStream));
         }catch (EntidadeNaoEncontradaException e){
@@ -65,28 +60,29 @@ public class AnimalFotoController {
         }
     }
 
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public AnimalFotoDTO atualizarFoto(@PathVariable Long animalId, @Valid FotoInput fotoInput) throws IOException {
-        Animal animal = animalService.buscarOuFalhar(animalId);
+    @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public UsuarioFotoDTO atualizarFoto(@PathVariable Long usuarioId, @Valid FotoInput fotoInput) throws IOException {
+        Usuario usuario = usuarioService.buscarOuFalhar(usuarioId);
 
         MultipartFile arquivo = fotoInput.getArquivo();
 
-        AnimalFoto foto = new AnimalFoto();
-        foto.setAnimal(animal);
+        UsuarioFoto foto = new UsuarioFoto();
+        foto.setUsuario(usuario);
         foto.setDescricao(fotoInput.getDescricao());
         foto.setContentType(arquivo.getContentType());
         foto.setTamanho(arquivo.getSize());
         foto.setNomeArquivo(arquivo.getOriginalFilename());
 
-        AnimalFoto fotoSalva = animalFotoService.salvar(foto, arquivo.getInputStream());
+        UsuarioFoto fotoSalva = usuarioFotoService.salvar(foto, arquivo.getInputStream());
 
-        return animalFotoAssembler.toModel(fotoSalva);
+        return usuarioFotoAssembler.toModel(fotoSalva);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long animalId){
-        animalFotoService.excluir(animalId);
+    public void excluir(@PathVariable Long usuarioId){
+        usuarioFotoService.excluir(usuarioId);
     }
 
     private void verificarCompatibilidadeMediaType(MediaType mediaTypeFoto,
@@ -98,4 +94,5 @@ public class AnimalFotoController {
             throw new HttpMediaTypeNotAcceptableException(mediaTypesAceitas);
         }
     }
+
 }

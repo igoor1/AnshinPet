@@ -21,6 +21,9 @@ public class AnimalService {
     @Autowired
     private AnimalRepository animalRepository;
 
+    @Autowired
+    private AnimalFotoService animalFotoService;
+
     public List<Animal> listar(){
         return animalRepository.findAll();
     }
@@ -33,6 +36,10 @@ public class AnimalService {
     @Transactional
     public void excluir(Long animalId){
         try{
+            var foto = animalFotoService.buscarOuFalhar(animalId);
+            if (foto != null) {
+                animalFotoService.excluir(animalId);
+            }
             animalRepository.deleteById(animalId);
 
         } catch (EmptyResultDataAccessException e){

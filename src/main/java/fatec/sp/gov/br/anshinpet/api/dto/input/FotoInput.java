@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
-public class AnimalFotoInput {
+public class FotoInput {
 
     @NotNull
     private MultipartFile arquivo;

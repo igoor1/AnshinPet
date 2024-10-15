@@ -1,8 +1,8 @@
 package fatec.sp.gov.br.anshinpet.api.controller;
 
 import fatec.sp.gov.br.anshinpet.api.assembler.AnimalFotoModelAssembler;
-import fatec.sp.gov.br.anshinpet.api.model.AnimalFotoModel;
-import fatec.sp.gov.br.anshinpet.api.model.input.AnimalFotoInput;
+import fatec.sp.gov.br.anshinpet.api.dto.AnimalFotoDTO;
+import fatec.sp.gov.br.anshinpet.api.dto.input.AnimalFotoInput;
 import fatec.sp.gov.br.anshinpet.domain.exception.EntidadeNaoEncontradaException;
 import fatec.sp.gov.br.anshinpet.domain.model.Animal;
 import fatec.sp.gov.br.anshinpet.domain.model.AnimalFoto;
@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@RequestMapping("/animais/{animalId}/foto")
+@RequestMapping("/api/animais/{animalId}/foto")
 public class AnimalFotoController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class AnimalFotoController {
     private FotoStorageService fotoStorage;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public AnimalFotoModel buscar(@PathVariable Long animalId){
+    public AnimalFotoDTO buscar(@PathVariable Long animalId){
         AnimalFoto animalFoto = animalFotoService.buscarOuFalhar(animalId);
         return animalFotoAssembler.toModel(animalFoto);
     }
@@ -65,7 +65,7 @@ public class AnimalFotoController {
     }
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public AnimalFotoModel atualizarFoto(@PathVariable Long animalId, @Valid AnimalFotoInput animalFotoInput) throws IOException {
+    public AnimalFotoDTO atualizarFoto(@PathVariable Long animalId, @Valid AnimalFotoInput animalFotoInput) throws IOException {
         Animal animal = animalService.buscarOuFalhar(animalId);
 
         MultipartFile arquivo = animalFotoInput.getArquivo();

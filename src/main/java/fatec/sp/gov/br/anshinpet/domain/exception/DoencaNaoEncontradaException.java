@@ -1,6 +1,4 @@
-package fatec.sp.gov.br.anshinpet.domain.exception.doenca;
-
-import fatec.sp.gov.br.anshinpet.domain.exception.EntidadeNaoEncontradaException;
+package fatec.sp.gov.br.anshinpet.domain.exception;
 
 public class DoencaNaoEncontradaException extends EntidadeNaoEncontradaException {
 

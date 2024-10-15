@@ -1,6 +1,4 @@
-package fatec.sp.gov.br.anshinpet.domain.exception.animalDoenca;
-
-import fatec.sp.gov.br.anshinpet.domain.exception.EntidadeNaoEncontradaException;
+package fatec.sp.gov.br.anshinpet.domain.exception;
 
 public class AnimalDoencaNaoEncontradoException extends EntidadeNaoEncontradaException {
     private static final long serialVersionUID = 1L;

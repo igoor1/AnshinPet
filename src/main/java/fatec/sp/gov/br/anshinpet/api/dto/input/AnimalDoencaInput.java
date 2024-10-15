@@ -1,4 +1,4 @@
-package fatec.sp.gov.br.anshinpet.api.model.input;
+package fatec.sp.gov.br.anshinpet.api.dto.input;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -6,17 +6,15 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
-public class AnimalVacinaInput {
+public class AnimalDoencaInput {
 
     @NotBlank
-    private String lote;
+    private String status;
 
-    @NotNull
-    private LocalDate dataAplicacao;
+    @NotBlank
+    private String descricao;
 
     @Valid
     @NotNull
@@ -24,5 +22,5 @@ public class AnimalVacinaInput {
 
     @Valid
     @NotNull
-    private VacinaIdInput vacina;
+    private DoencaIdInput doenca;
 }

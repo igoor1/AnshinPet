@@ -2,8 +2,8 @@ package fatec.sp.gov.br.anshinpet.api.controller;
 
 import fatec.sp.gov.br.anshinpet.api.assembler.VacinaInputDisassembler;
 import fatec.sp.gov.br.anshinpet.api.assembler.VacinaModelAssembler;
-import fatec.sp.gov.br.anshinpet.api.model.VacinaModel;
-import fatec.sp.gov.br.anshinpet.api.model.input.VacinaInput;
+import fatec.sp.gov.br.anshinpet.api.dto.VacinaDTO;
+import fatec.sp.gov.br.anshinpet.api.dto.input.VacinaInput;
 import fatec.sp.gov.br.anshinpet.domain.model.Vacina;
 import fatec.sp.gov.br.anshinpet.domain.service.VacinaService;
 import jakarta.validation.Valid;
@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/vacinas")
-@CrossOrigin(origins = "http://localhost:5173")
+@RequestMapping("/api/vacinas")
 public class VacinaController {
 
     @Autowired
@@ -28,27 +27,27 @@ public class VacinaController {
     private VacinaInputDisassembler vacinaInputDisassembler;
 
     @GetMapping
-    public List<VacinaModel> listar(){
+    public List<VacinaDTO> listar(){
         List<Vacina> vacinas = vacinaService.listar();
         return vacinaModelAssembler.toCollectionModel(vacinas);
     }
 
     @GetMapping("/{vacinaId}")
-    public VacinaModel buscar(@PathVariable Long vacinaId){
+    public VacinaDTO buscar(@PathVariable Long vacinaId){
         Vacina vacina = vacinaService.buscarOuFalhar(vacinaId);
         return vacinaModelAssembler.toModel(vacina);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public VacinaModel adicionar(@RequestBody @Valid VacinaInput vacinaInput){
+    public VacinaDTO adicionar(@RequestBody @Valid VacinaInput vacinaInput){
         Vacina vacina = vacinaInputDisassembler.toDomainObject(vacinaInput);
         vacina = vacinaService.salvar(vacina);
         return vacinaModelAssembler.toModel(vacina);
     }
 
     @PutMapping("/{vacinaId}")
-    public VacinaModel atualizar(@PathVariable Long vacinaId, @RequestBody @Valid VacinaInput vacinaInput){
+    public VacinaDTO atualizar(@PathVariable Long vacinaId, @RequestBody @Valid VacinaInput vacinaInput){
 
         Vacina vacinaAtual = vacinaService.buscarOuFalhar(vacinaId);
         vacinaInputDisassembler.copyToDomainObject(vacinaInput, vacinaAtual);

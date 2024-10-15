@@ -2,8 +2,8 @@ package fatec.sp.gov.br.anshinpet.api.controller;
 
 import fatec.sp.gov.br.anshinpet.api.assembler.AnimalModelAssembler;
 import fatec.sp.gov.br.anshinpet.api.assembler.AnimalInputDisassembler;
-import fatec.sp.gov.br.anshinpet.api.model.AnimalModel;
-import fatec.sp.gov.br.anshinpet.api.model.input.AnimalInput;
+import fatec.sp.gov.br.anshinpet.api.dto.AnimalDTO;
+import fatec.sp.gov.br.anshinpet.api.dto.input.AnimalInput;
 import fatec.sp.gov.br.anshinpet.domain.model.Animal;
 import fatec.sp.gov.br.anshinpet.domain.service.AnimalService;
 import jakarta.validation.Valid;
@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/animais")
-@CrossOrigin(origins = "http://localhost:5173")
+@RequestMapping("/api/animais")
 public class AnimalController {
 
     @Autowired
@@ -29,30 +28,30 @@ public class AnimalController {
     private AnimalInputDisassembler animalInputDisassembler;
 
     @GetMapping
-    public List<AnimalModel> listar(){
+    public List<AnimalDTO> listar(){
         return animalModelAssembler.toCollectionModel(animalService.listar());
     }
 
     @GetMapping("/{animalId}")
-    public AnimalModel buscar(@PathVariable Long animalId){
+    public AnimalDTO buscar(@PathVariable Long animalId){
         Animal animal = animalService.buscarOuFalhar(animalId);
         return animalModelAssembler.toModel(animal);
     }
 
     @GetMapping("/listar/{animalNome}")
-    public ResponseEntity<List<AnimalModel>> buscarPorNome(@PathVariable String animalNome){
+    public ResponseEntity<List<AnimalDTO>> buscarPorNome(@PathVariable String animalNome){
         List<Animal> animal = animalService.buscarPorNome(animalNome);
         return ResponseEntity.ok(animalModelAssembler.toCollectionModel(animal));
     }
 
     @PostMapping
-    public AnimalModel adicionar(@RequestBody @Valid AnimalInput animalInput){
+    public AnimalDTO adicionar(@RequestBody @Valid AnimalInput animalInput){
         Animal animal = animalInputDisassembler.toDomainObject(animalInput);
            return animalModelAssembler.toModel(animalService.salvar(animal));
     }
 
     @PutMapping("/{animalId}")
-    public AnimalModel atualizar(@PathVariable Long animalId, @RequestBody @Valid AnimalInput animalInput){
+    public AnimalDTO atualizar(@PathVariable Long animalId, @RequestBody @Valid AnimalInput animalInput){
         Animal animalAtual = animalService.buscarOuFalhar(animalId);
         animalInputDisassembler.copyToDomainObject(animalInput, animalAtual);
         return animalModelAssembler.toModel(animalService.salvar(animalAtual));

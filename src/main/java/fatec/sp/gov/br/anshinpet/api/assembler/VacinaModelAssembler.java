@@ -1,6 +1,6 @@
 package fatec.sp.gov.br.anshinpet.api.assembler;
 
-import fatec.sp.gov.br.anshinpet.api.model.VacinaModel;
+import fatec.sp.gov.br.anshinpet.api.dto.VacinaDTO;
 import fatec.sp.gov.br.anshinpet.domain.model.Vacina;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +15,11 @@ public class VacinaModelAssembler {
     @Autowired
     private ModelMapper modelMapper;
 
-    public VacinaModel toModel(Vacina vacina){
-        return modelMapper.map(vacina, VacinaModel.class);
+    public VacinaDTO toModel(Vacina vacina){
+        return modelMapper.map(vacina, VacinaDTO.class);
     }
 
-    public List<VacinaModel> toCollectionModel(List<Vacina> vacinas){
+    public List<VacinaDTO> toCollectionModel(List<Vacina> vacinas){
         return vacinas.stream()
                 .map(this::toModel)
                 .collect(Collectors.toList());

@@ -1,7 +1,6 @@
-package fatec.sp.gov.br.anshinpet.api.model.input;
+package fatec.sp.gov.br.anshinpet.api.dto.input;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Null;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +20,7 @@ public class DoacaoInput {
 
     private Integer quantidade;
 
-    @NotBlank
+
     private LocalDate data;
 
     @NotBlank

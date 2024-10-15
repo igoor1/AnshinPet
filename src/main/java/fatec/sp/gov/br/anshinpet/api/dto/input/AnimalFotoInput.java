@@ -1,4 +1,4 @@
-package fatec.sp.gov.br.anshinpet.api.model.input;
+package fatec.sp.gov.br.anshinpet.api.dto.input;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

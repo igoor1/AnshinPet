@@ -33,3 +33,5 @@ INSERT INTO animal_doenca (id, status, descricao, animal_id, doenca_id) VALUES (
 INSERT INTO animal_doenca (id, status, descricao, animal_id, doenca_id) VALUES (3, 'Crônico', 'Animal com Cinomose em estado crônico', 3, 3);
 INSERT INTO animal_doenca (id, status, descricao, animal_id, doenca_id) VALUES (4, 'Tratamento', 'Animal em tratamento para Leishmaniose', 4, 4);
 INSERT INTO animal_doenca (id, status, descricao, animal_id, doenca_id) VALUES (5, 'Quarentena', 'Animal em quarentena devido à Raiva', 5, 5);
+
+insert into users(id, role, celular,email, password, nome, sexo, cpf) values(1,0,"2346","kaiki@kaiki.com","$2a$10$zmzxbzXvp2JMhi39QYddwOYquMA9ZUU9cffKh85lY47zym/PWfC0i","kaiki","M","1234");

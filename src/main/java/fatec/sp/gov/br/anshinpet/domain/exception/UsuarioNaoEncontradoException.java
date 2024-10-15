@@ -8,7 +8,7 @@ public class UsuarioNaoEncontradoException extends EntidadeNaoEncontradaExceptio
         super(mensagem);
     }
 
-    public UsuarioNaoEncontradoException(String email) {
-        super(String.format("O email ja esta cadastrado.", email));
+    public UsuarioNaoEncontradoException(Long usuarioId) {
+        super(String.format("Usuário com ID %d não foi encontrado", usuarioId));
     }
 }

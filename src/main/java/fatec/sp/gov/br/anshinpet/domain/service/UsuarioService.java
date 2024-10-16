@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -48,5 +49,10 @@ public class UsuarioService {
     public Usuario buscarOuFalhar(Long usuarioId) {
         return usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new UsuarioNaoEncontradoException(usuarioId));
+    }
+
+    public BigDecimal buscarQntdUsuarios() {
+        long count = usuarioRepository.count();
+        return BigDecimal.valueOf(count);
     }
 }

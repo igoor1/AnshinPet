@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -36,6 +37,11 @@ public class UsuarioController {
     public UsuarioDTO buscar(@PathVariable Long usuarioId){
         Usuario usuario = usuarioService.buscarOuFalhar(usuarioId);
         return usuarioModelAssembler.toModel(usuario);
+    }
+
+    @GetMapping("/quantidade")
+    public BigDecimal getQuantidadeAnimais() {
+        return usuarioService.buscarQntdUsuarios();
     }
 
     @PutMapping("/{usuarioId}")

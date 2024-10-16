@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -37,6 +38,21 @@ public class DoacaoController {
     public DoacaoDTO buscar(@PathVariable Long doacaoId){
         Doacao doacao = doacaoService.buscarOuFalhar(doacaoId);
         return doacaoModelAssembler.toModel(doacao);
+    }
+
+    @GetMapping("/quantidade")
+    public BigDecimal buscarPorQuantidade(){
+        return doacaoService.buscarQntdDoacoes();
+    }
+
+    @GetMapping("/quantidade/dinheiro")
+    public BigDecimal buscarPorDinheiro(){
+        return doacaoService.qntdTipoDinheiro();
+    }
+
+    @GetMapping("/quantidade/racao")
+    public BigDecimal buscarPorRacao(){
+        return doacaoService.qntdTipoRacao();
     }
 
     @GetMapping("/listar/{tipoDoacao}")

@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -58,5 +59,25 @@ public class AnimalService {
     public Animal buscarOuFalhar(Long animalId){
         return animalRepository.findById(animalId)
                 .orElseThrow(()-> new AnimalNaoEncontradoException(animalId));
+    }
+
+    public BigDecimal buscarQntdAnimais(){
+        long count = animalRepository.count();
+        return BigDecimal.valueOf(count);
+    }
+
+     public BigDecimal buscarQntdPorTipo(String tipo){
+        long count = animalRepository.countByTipo(tipo);
+        return BigDecimal.valueOf(count);
+     }
+
+     public BigDecimal qntdAnimaisDisponivel(){
+        long count = animalRepository.countByAdocao("S");
+        return BigDecimal.valueOf(count);
+     }
+
+    public BigDecimal qntdAnimaisNaoDisponivel(){
+        long count = animalRepository.countByAdocao("N");
+        return BigDecimal.valueOf(count);
     }
 }

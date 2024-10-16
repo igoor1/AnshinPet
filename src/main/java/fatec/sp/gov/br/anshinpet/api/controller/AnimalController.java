@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -42,6 +43,26 @@ public class AnimalController {
     public ResponseEntity<List<AnimalDTO>> buscarPorNome(@PathVariable String animalNome){
         List<Animal> animal = animalService.buscarPorNome(animalNome);
         return ResponseEntity.ok(animalModelAssembler.toCollectionModel(animal));
+    }
+
+    @GetMapping("/quantidade")
+    public BigDecimal buscarQuantidadeAnimais() {
+        return animalService.buscarQntdAnimais();
+    }
+
+    @GetMapping("/quantidade/{tipo}")
+    public BigDecimal buscarQuantidadePorTipo(@PathVariable String tipo){
+        return animalService.buscarQntdPorTipo(tipo);
+    }
+
+    @GetMapping("/quantidade/disponiveis")
+    public BigDecimal buscarQntdDisponivel(){
+        return animalService.qntdAnimaisDisponivel();
+    }
+
+    @GetMapping("/quantidade/nao-disponiveis")
+    public BigDecimal buscarQntdNaoDisponivel(){
+        return animalService.qntdAnimaisNaoDisponivel();
     }
 
     @PostMapping

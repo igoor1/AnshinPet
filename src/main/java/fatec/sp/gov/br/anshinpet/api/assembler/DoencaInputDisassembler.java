@@ -1,6 +1,6 @@
 package fatec.sp.gov.br.anshinpet.api.assembler;
 
-import fatec.sp.gov.br.anshinpet.api.model.input.DoencaInput;
+import fatec.sp.gov.br.anshinpet.api.dto.input.DoencaInput;
 import fatec.sp.gov.br.anshinpet.domain.model.Doenca;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

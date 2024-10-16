@@ -1,4 +1,4 @@
-package fatec.sp.gov.br.anshinpet.api.model.input;
+package fatec.sp.gov.br.anshinpet.api.dto.input;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
-public class AnimalFotoInput {
+public class FotoInput {
 
     @NotNull
     private MultipartFile arquivo;

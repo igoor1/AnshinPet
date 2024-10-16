@@ -1,13 +1,12 @@
 package fatec.sp.gov.br.anshinpet.api.controller;
 
-import fatec.sp.gov.br.anshinpet.api.model.LoginModel;
-import fatec.sp.gov.br.anshinpet.api.model.input.LoginInput;
-import fatec.sp.gov.br.anshinpet.api.model.input.UsuarioInput;
+import fatec.sp.gov.br.anshinpet.api.dto.LoginDTO;
+import fatec.sp.gov.br.anshinpet.api.dto.input.LoginInput;
+import fatec.sp.gov.br.anshinpet.api.dto.input.UsuarioInput;
 import fatec.sp.gov.br.anshinpet.domain.model.Usuario;
 import fatec.sp.gov.br.anshinpet.domain.service.AuthService;
 import fatec.sp.gov.br.anshinpet.domain.service.TokenService;
 import jakarta.validation.Valid;
-import org.apache.coyote.http11.upgrade.UpgradeServletOutputStream;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
@@ -36,7 +35,7 @@ public class AuthController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginInput.getEmail(), loginInput.getSenha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((Usuario) auth.getPrincipal());
-        return ResponseEntity.ok(new LoginModel(token));
+        return ResponseEntity.ok(new LoginDTO(token));
     }
 
     @PostMapping("/register")

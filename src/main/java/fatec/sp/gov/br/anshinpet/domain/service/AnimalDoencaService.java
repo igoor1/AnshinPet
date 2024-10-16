@@ -1,7 +1,7 @@
 package fatec.sp.gov.br.anshinpet.domain.service;
 
 import fatec.sp.gov.br.anshinpet.domain.exception.NegocioException;
-import fatec.sp.gov.br.anshinpet.domain.exception.animalDoenca.AnimalDoencaNaoEncontradoException;
+import fatec.sp.gov.br.anshinpet.domain.exception.AnimalDoencaNaoEncontradoException;
 import fatec.sp.gov.br.anshinpet.domain.model.Animal;
 import fatec.sp.gov.br.anshinpet.domain.model.AnimalDoenca;
 import fatec.sp.gov.br.anshinpet.domain.model.Doenca;

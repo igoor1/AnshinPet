@@ -1,4 +1,4 @@
-package fatec.sp.gov.br.anshinpet.api.model;
+package fatec.sp.gov.br.anshinpet.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,11 +7,11 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class AnimalVacinaModel {
+public class AnimalVacinaDTO {
 
     private Long id;
     private String lote;
     private LocalDate dataAplicacao;
-    private AnimalModel animal;
-    private VacinaModel vacina;
+    private AnimalDTO animal;
+    private VacinaDTO vacina;
 }

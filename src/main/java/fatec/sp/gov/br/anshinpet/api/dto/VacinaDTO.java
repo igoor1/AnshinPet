@@ -1,11 +1,11 @@
-package fatec.sp.gov.br.anshinpet.api.model;
+package fatec.sp.gov.br.anshinpet.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class VacinaModel {
+public class VacinaDTO {
 
     private Long id;
     private String nome;

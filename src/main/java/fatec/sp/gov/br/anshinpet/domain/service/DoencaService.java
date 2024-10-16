@@ -1,7 +1,7 @@
 package fatec.sp.gov.br.anshinpet.domain.service;
 
 import fatec.sp.gov.br.anshinpet.domain.exception.NegocioException;
-import fatec.sp.gov.br.anshinpet.domain.exception.doenca.DoencaNaoEncontradaException;
+import fatec.sp.gov.br.anshinpet.domain.exception.DoencaNaoEncontradaException;
 import fatec.sp.gov.br.anshinpet.domain.model.Doenca;
 import fatec.sp.gov.br.anshinpet.domain.repository.DoencaRepository;
 import org.springframework.beans.factory.annotation.Autowired;

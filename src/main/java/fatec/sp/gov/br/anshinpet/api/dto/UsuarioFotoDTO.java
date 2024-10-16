@@ -1,11 +1,11 @@
-package fatec.sp.gov.br.anshinpet.api.model;
+package fatec.sp.gov.br.anshinpet.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class AnimalFotoModel {
+@Setter
+public class UsuarioFotoDTO {
 
     private String nomeArquivo;
     private String descricao;

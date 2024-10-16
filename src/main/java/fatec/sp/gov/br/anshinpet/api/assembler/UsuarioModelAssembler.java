@@ -1,7 +1,7 @@
 package fatec.sp.gov.br.anshinpet.api.assembler;
 
-import fatec.sp.gov.br.anshinpet.api.dto.AnimalVacinaDTO;
-import fatec.sp.gov.br.anshinpet.domain.model.AnimalVacina;
+import fatec.sp.gov.br.anshinpet.api.dto.UsuarioDTO;
+import fatec.sp.gov.br.anshinpet.domain.model.Usuario;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,23 +10,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class AnimalVacinaModelAssembler {
+public class UsuarioModelAssembler {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public AnimalVacinaDTO toModel(AnimalVacina animalVacina){
-        return modelMapper.map(animalVacina, AnimalVacinaDTO.class);
+    public UsuarioDTO toModel(Usuario usuario){
+        return modelMapper.map(usuario, UsuarioDTO.class);
     }
 
-    public List<AnimalVacinaDTO> toCollectionModel(List<AnimalVacina> animalVacinas){
-        return animalVacinas.stream()
+    public List<UsuarioDTO> toCollectionModel(List<Usuario> usuarios){
+        return usuarios.stream()
                 .map(this::toModel)
                 .collect(Collectors.toList());
     }
 }
-
-
-
-
-

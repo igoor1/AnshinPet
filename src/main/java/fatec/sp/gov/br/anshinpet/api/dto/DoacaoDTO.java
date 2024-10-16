@@ -1,4 +1,4 @@
-package fatec.sp.gov.br.anshinpet.api.model;
+package fatec.sp.gov.br.anshinpet.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class DoacaoModel {
+public class DoacaoDTO {
 
     private Long id;
     private String tipo;

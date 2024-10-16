@@ -1,6 +1,6 @@
 package fatec.sp.gov.br.anshinpet.api.assembler;
 
-import fatec.sp.gov.br.anshinpet.api.model.input.AnimalFotoInput;
+import fatec.sp.gov.br.anshinpet.api.dto.input.FotoInput;
 import fatec.sp.gov.br.anshinpet.domain.model.AnimalFoto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +12,11 @@ public class AnimalFotoInputDisassembler {
     @Autowired
     private ModelMapper modelMapper;
 
-    public AnimalFoto toDomainObject(AnimalFotoInput animalFotoInput){
-        return modelMapper.map(animalFotoInput, AnimalFoto.class);
+    public AnimalFoto toDomainObject(FotoInput fotoInput){
+        return modelMapper.map(fotoInput, AnimalFoto.class);
     }
 
-    public void copyToDomainObject(AnimalFotoInput animalFotoInput, AnimalFoto animalFoto){
-        modelMapper.map(animalFotoInput, animalFoto);
+    public void copyToDomainObject(FotoInput fotoInput, AnimalFoto animalFoto){
+        modelMapper.map(fotoInput, animalFoto);
     }
 }

@@ -1,7 +1,6 @@
 package fatec.sp.gov.br.anshinpet.api.assembler;
 
-import fatec.sp.gov.br.anshinpet.api.model.AnimalVacinaModel;
-import fatec.sp.gov.br.anshinpet.api.model.input.AnimalVacinaInput;
+import fatec.sp.gov.br.anshinpet.api.dto.input.AnimalVacinaInput;
 import fatec.sp.gov.br.anshinpet.domain.model.AnimalVacina;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

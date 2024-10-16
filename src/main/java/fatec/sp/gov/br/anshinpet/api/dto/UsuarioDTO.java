@@ -1,4 +1,4 @@
-package fatec.sp.gov.br.anshinpet.api.model;
+package fatec.sp.gov.br.anshinpet.api.dto;
 
 import fatec.sp.gov.br.anshinpet.domain.model.Role;
 import lombok.Getter;
@@ -6,8 +6,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UsuarioModel {
+public class UsuarioDTO {
 
+    private Long id;
     private String nome;
     private String celular;
     private String cpf;

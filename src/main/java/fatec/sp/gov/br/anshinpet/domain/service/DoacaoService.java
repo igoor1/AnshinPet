@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -51,5 +52,20 @@ public class DoacaoService {
 
     public List<Doacao> buscarPortipo(String tipoDoacao){
         return doacaoRepository.findByTipo(tipoDoacao);
+    }
+
+    public BigDecimal buscarQntdDoacoes(){
+        long count = doacaoRepository.count();
+        return BigDecimal.valueOf(count);
+    }
+
+    public BigDecimal qntdTipoDinheiro(){
+        long count = doacaoRepository.countByDoacao("D");
+        return BigDecimal.valueOf(count);
+    }
+
+    public BigDecimal qntdTipoRacao(){
+        long count = doacaoRepository.countByDoacao("R");
+        return BigDecimal.valueOf(count);
     }
 }

@@ -2,8 +2,8 @@ package fatec.sp.gov.br.anshinpet.api.controller;
 
 import fatec.sp.gov.br.anshinpet.api.assembler.DoacaoInputDisassembler;
 import fatec.sp.gov.br.anshinpet.api.assembler.DoacaoModelAssembler;
-import fatec.sp.gov.br.anshinpet.api.model.DoacaoModel;
-import fatec.sp.gov.br.anshinpet.api.model.input.DoacaoInput;
+import fatec.sp.gov.br.anshinpet.api.dto.DoacaoDTO;
+import fatec.sp.gov.br.anshinpet.api.dto.input.DoacaoInput;
 import fatec.sp.gov.br.anshinpet.domain.model.Doacao;
 import fatec.sp.gov.br.anshinpet.domain.service.DoacaoService;
 import jakarta.validation.Valid;
@@ -12,11 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/doacoes")
-@CrossOrigin(origins = "http://localhost:5173")
+@RequestMapping("/api/doacoes")
 public class DoacaoController {
 
     @Autowired
@@ -29,31 +29,46 @@ public class DoacaoController {
     private DoacaoModelAssembler doacaoModelAssembler;
 
     @GetMapping
-    public List<DoacaoModel> listar(){
+    public List<DoacaoDTO> listar(){
         List<Doacao> doacoes = doacaoService.listar();
         return doacaoModelAssembler.toCollectionModel(doacoes);
     }
 
     @GetMapping("/{doacaoId}")
-    public DoacaoModel buscar(@PathVariable Long doacaoId){
+    public DoacaoDTO buscar(@PathVariable Long doacaoId){
         Doacao doacao = doacaoService.buscarOuFalhar(doacaoId);
         return doacaoModelAssembler.toModel(doacao);
     }
 
+    @GetMapping("/quantidade")
+    public BigDecimal buscarPorQuantidade(){
+        return doacaoService.buscarQntdDoacoes();
+    }
+
+    @GetMapping("/quantidade/dinheiro")
+    public BigDecimal buscarPorDinheiro(){
+        return doacaoService.qntdTipoDinheiro();
+    }
+
+    @GetMapping("/quantidade/racao")
+    public BigDecimal buscarPorRacao(){
+        return doacaoService.qntdTipoRacao();
+    }
+
     @GetMapping("/listar/{tipoDoacao}")
-    public ResponseEntity<List<DoacaoModel>> buscvarPOrTipo(@PathVariable String tipoDoacao){
+    public ResponseEntity<List<DoacaoDTO>> buscvarPOrTipo(@PathVariable String tipoDoacao){
         List<Doacao> doacao = doacaoService.buscarPortipo(tipoDoacao);
         return ResponseEntity.ok(doacaoModelAssembler.toCollectionModel(doacao));
     }
 
     @PostMapping
-    public DoacaoModel adicionar(@RequestBody @Valid DoacaoInput doacaoInput){
+    public DoacaoDTO adicionar(@RequestBody @Valid DoacaoInput doacaoInput){
         Doacao doacao = doacaoInputDisassembler.toDomainObject(doacaoInput);
         return doacaoModelAssembler.toModel(doacaoService.salvar(doacao));
     }
 
     @PutMapping("/{doacaoId}")
-    public DoacaoModel atualizar(@PathVariable Long doacaoId, @RequestBody @Valid DoacaoInput doacaoInput){
+    public DoacaoDTO atualizar(@PathVariable Long doacaoId, @RequestBody @Valid DoacaoInput doacaoInput){
         Doacao doacaoAtual = doacaoService.buscarOuFalhar(doacaoId);
         doacaoInputDisassembler.copyToDomainObject(doacaoInput, doacaoAtual);
         return doacaoModelAssembler.toModel(doacaoService.salvar(doacaoAtual));

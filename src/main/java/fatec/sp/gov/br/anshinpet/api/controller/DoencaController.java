@@ -9,6 +9,7 @@ import fatec.sp.gov.br.anshinpet.domain.service.DoencaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,12 @@ public class DoencaController {
     public DoencaDTO buscar(@PathVariable Long doencaId){
         Doenca doenca = doencaService.buscarOuFalhar(doencaId);
         return doencaModelAssembler.toModel(doenca);
+    }
+
+    @GetMapping("/listar/{nomeDoenca}")
+    public ResponseEntity<List<DoencaDTO>> buscarPorNome(@PathVariable String nomeDoenca){
+        List<Doenca> doencas = doencaService.buscarPorNome(nomeDoenca);
+        return ResponseEntity.ok(doencaModelAssembler.toCollectionModel(doencas));
     }
 
     @PostMapping

@@ -3,23 +3,23 @@ package fatec.sp.gov.br.anshinpet.infrastructure.service;
 import fatec.sp.gov.br.anshinpet.domain.service.FotoStorageService;
 import fatec.sp.gov.br.anshinpet.infrastructure.exception.StorageException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Service
 public class LocalFotoStorageService implements FotoStorageService {
 
     @Value("${anshinPet.storage.local.diretorio-fotos}")
     private Path diretorioFotos;
 
     @Override
-    public InputStream recuperar(String nomeArquivo) {
+    public FotoRecuperada recuperar(String nomeArquivo) {
         try {
-            return Files.newInputStream(getArquivoPath(nomeArquivo));
+            FotoRecuperada fotoRecuperada = FotoRecuperada.builder()
+                    .inputStream(Files.newInputStream(getArquivoPath(nomeArquivo)))
+                    .build();
+            return fotoRecuperada;
         } catch (Exception e) {
             throw new StorageException("Não foi possivel recuperar o arquivo.", e);
         }

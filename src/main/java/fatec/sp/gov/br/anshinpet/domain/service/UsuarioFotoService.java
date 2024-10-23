@@ -50,10 +50,6 @@ public class UsuarioFotoService {
                 .orElseThrow(() -> new FotoNaoEncontradaException(usuarioId));
     }
 
-    public InputStream pegar(String nome){
-       return fotoStorage.recuperar(nome);
-    }
-
     public void excluir(Long usuarioId){
         UsuarioFoto foto = buscarOuFalhar(usuarioId);
         usuarioRepository.delete(foto);

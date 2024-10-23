@@ -12,6 +12,7 @@ import fatec.sp.gov.br.anshinpet.domain.service.FotoStorageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,11 +56,13 @@ public class AnimalFotoController {
             MediaType mediaTypeFoto = MediaType.parseMediaType(animalFoto.getContentType());
             List<MediaType> mediaTypeAceitas = MediaType.parseMediaTypes(acceptHeader);
             verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypeAceitas);
+            FotoStorageService.FotoRecuperada fotoRecuperada = fotoStorage.recuperar(animalFoto.getNomeArquivo());
 
-
-            InputStream inputStream = fotoStorage.recuperar(animalFoto.getNomeArquivo());
-            return ResponseEntity.ok().contentType(mediaTypeFoto)
-                    .body(new InputStreamResource(inputStream));
+            if (fotoRecuperada.temUrl()){
+                return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, fotoRecuperada.getUrl()).build();
+            } else{
+                return ResponseEntity.ok().contentType(mediaTypeFoto).body(new InputStreamResource(fotoRecuperada.getInputStream()));
+            }
         }catch (EntidadeNaoEncontradaException e){
             return ResponseEntity.notFound().build();
         }

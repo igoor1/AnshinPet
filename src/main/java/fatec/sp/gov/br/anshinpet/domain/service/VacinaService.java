@@ -39,4 +39,8 @@ public class VacinaService {
         return vacinaRepository.findById(vacinaId)
                 .orElseThrow(()-> new VacinaNaoEncontradaException(vacinaId));
     }
+
+    public List<Vacina> buscarPorNome(String nomeVacina){
+        return vacinaRepository.findByNameContaining(nomeVacina);
+    }
 }

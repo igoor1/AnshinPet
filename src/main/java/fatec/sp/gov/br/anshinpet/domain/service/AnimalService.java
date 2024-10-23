@@ -16,9 +16,6 @@ import java.util.List;
 @Service
 public class AnimalService {
 
-    private static final String MSG_ANIMAL_EM_USO
-            = "Animal de código %d não pode ser removido, pois está em uso";
-
     @Autowired
     private AnimalRepository animalRepository;
 
@@ -36,20 +33,14 @@ public class AnimalService {
 
     @Transactional
     public void excluir(Long animalId){
-        try{
-            var foto = animalFotoService.buscarOuFalhar(animalId);
-            if (foto != null) {
-                animalFotoService.excluir(animalId);
-            }
+        Animal animal = buscarOuFalhar(animalId);
+        animalRepository.findFotoById(animal.getId()).ifPresentOrElse((a) -> {
+            animalFotoService.excluir(animal.getId());
+            animalRepository.deleteById(animal.getId());
+            animalRepository.flush();
+        }, () -> {
             animalRepository.deleteById(animalId);
-
-        } catch (EmptyResultDataAccessException e){
-            throw new AnimalNaoEncontradoException(animalId);
-
-        } catch (DataIntegrityViolationException e){
-            throw new NegocioException(
-                    String.format(MSG_ANIMAL_EM_USO,animalId));
-        }
+        });
     }
 
     public List<Animal> buscarPorNome(String animalNome){

@@ -6,11 +6,13 @@ import fatec.sp.gov.br.anshinpet.api.dto.input.FotoInput;
 import fatec.sp.gov.br.anshinpet.domain.exception.EntidadeNaoEncontradaException;
 import fatec.sp.gov.br.anshinpet.domain.model.Usuario;
 import fatec.sp.gov.br.anshinpet.domain.model.UsuarioFoto;
+import fatec.sp.gov.br.anshinpet.domain.service.FotoStorageService;
 import fatec.sp.gov.br.anshinpet.domain.service.UsuarioFotoService;
 import fatec.sp.gov.br.anshinpet.domain.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -34,6 +35,9 @@ public class UsuarioFotoController {
 
     @Autowired
     private UsuarioFotoModelAssembler usuarioFotoAssembler;
+
+    @Autowired
+    private FotoStorageService fotoStorage;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public UsuarioFotoDTO buscar(@PathVariable Long usuarioId){
@@ -52,9 +56,13 @@ public class UsuarioFotoController {
             List<MediaType> mediaTypeAceitas = MediaType.parseMediaTypes(acceptHeader);
             verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypeAceitas);
 
-            InputStream inputStream = usuarioFotoService.pegar(usuarioFoto.getNomeArquivo());
-            return ResponseEntity.ok().contentType(mediaTypeFoto)
-                    .body(new InputStreamResource(inputStream));
+            FotoStorageService.FotoRecuperada fotoRecuperada = fotoStorage.recuperar(usuarioFoto.getNomeArquivo());
+
+            if (fotoRecuperada.temUrl()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).header(HttpHeaders.LOCATION, fotoRecuperada.getUrl()).build();
+            } else{
+                return ResponseEntity.ok().contentType(mediaTypeFoto).body(new InputStreamResource(fotoRecuperada.getInputStream()));
+            }
         }catch (EntidadeNaoEncontradaException e){
             return ResponseEntity.notFound().build();
         }

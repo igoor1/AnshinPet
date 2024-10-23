@@ -9,6 +9,7 @@ import fatec.sp.gov.br.anshinpet.domain.service.VacinaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,12 @@ public class VacinaController {
     public VacinaDTO buscar(@PathVariable Long vacinaId){
         Vacina vacina = vacinaService.buscarOuFalhar(vacinaId);
         return vacinaModelAssembler.toModel(vacina);
+    }
+
+    @GetMapping("/listar/{nomeVacina}")
+    public ResponseEntity<List<VacinaDTO>> buscarPorNome(@PathVariable String nomeVacina){
+        List<Vacina> vacinas = vacinaService.buscarPorNome(nomeVacina);
+        return ResponseEntity.ok(vacinaModelAssembler.toCollectionModel(vacinas));
     }
 
     @PostMapping

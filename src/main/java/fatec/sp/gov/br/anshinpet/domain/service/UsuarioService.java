@@ -32,18 +32,15 @@ public class UsuarioService {
 
     @Transactional
     public void excluir(Long usuarioId) {
-        try {
-            var foto = usuarioFotoService.buscarOuFalhar(usuarioId);
-            if (foto != null) {
-                usuarioFotoService.excluir(usuarioId);
-            }
+        Usuario usuario = buscarOuFalhar(usuarioId);
+        usuarioRepository.findFotoById(usuario.getId()).ifPresentOrElse( u -> {
+            usuarioFotoService.excluir(usuario.getId());
+            usuarioRepository.deleteById(usuario.getId());
+            usuarioRepository.flush();
+            return;
+        }, () -> {
             usuarioRepository.deleteById(usuarioId);
-
-        } catch (EmptyResultDataAccessException e) {
-            throw new UsuarioNaoEncontradoException(usuarioId);
-        } catch (DataIntegrityViolationException e) {
-            throw new NegocioException("Usuário não pode ser removido, pois está em uso");
-        }
+        });
     }
 
     public Usuario buscarOuFalhar(Long usuarioId) {

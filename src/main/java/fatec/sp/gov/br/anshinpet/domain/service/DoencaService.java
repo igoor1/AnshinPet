@@ -43,4 +43,8 @@ public class DoencaService {
         return doencaRepository.findById(doencaId)
                 .orElseThrow(()-> new DoencaNaoEncontradaException(doencaId));
     }
+
+    public List<Doenca> buscarPorNome(String nomeDoenca){
+        return doencaRepository.findByNameContaining(nomeDoenca);
+    }
 }

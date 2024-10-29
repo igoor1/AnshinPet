@@ -22,4 +22,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Long>, AnimalRep
 
     @Query("select count(a) from Animal a where a.adocao = :adocao")
     Long countByAdocao(@Param("adocao") String adocao);
+
+    @Query("SELECT a FROM Animal a WHERE a.adocao = 'S'")
+    List<Animal> findDisponivelParaAdocao();
 }

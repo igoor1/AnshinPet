@@ -47,6 +47,10 @@ public class AnimalService {
         return animalRepository.findByNameContaining(animalNome);
     }
 
+    public List<Animal> buscarAdocao(){
+        return animalRepository.findDisponivelParaAdocao();
+    }
+
     public Animal buscarOuFalhar(Long animalId){
         return animalRepository.findById(animalId)
                 .orElseThrow(()-> new AnimalNaoEncontradoException(animalId));

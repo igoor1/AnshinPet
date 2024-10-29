@@ -7,6 +7,8 @@ import fatec.sp.gov.br.anshinpet.domain.repository.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +24,8 @@ public class AnimalService {
     @Autowired
     private AnimalFotoService animalFotoService;
 
-    public List<Animal> listar(){
-        return animalRepository.findAll();
+    public Page<Animal> listar(Pageable pageable){
+        return animalRepository.findAll(pageable);
     }
 
     @Transactional
@@ -47,8 +49,8 @@ public class AnimalService {
         return animalRepository.findByNameContaining(animalNome);
     }
 
-    public List<Animal> buscarAdocao(){
-        return animalRepository.findDisponivelParaAdocao();
+    public Page<Animal> buscarAdocao(Pageable pageable){
+        return animalRepository.findDisponivelParaAdocao(pageable);
     }
 
     public Animal buscarOuFalhar(Long animalId){

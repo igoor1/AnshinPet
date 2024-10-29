@@ -2,6 +2,8 @@ package fatec.sp.gov.br.anshinpet.domain.repository;
 
 import fatec.sp.gov.br.anshinpet.domain.model.Animal;
 import fatec.sp.gov.br.anshinpet.domain.model.AnimalFoto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,5 +26,5 @@ public interface AnimalRepository extends JpaRepository<Animal, Long>, AnimalRep
     Long countByAdocao(@Param("adocao") String adocao);
 
     @Query("SELECT a FROM Animal a WHERE a.adocao = 'S'")
-    List<Animal> findDisponivelParaAdocao();
+    Page<Animal> findDisponivelParaAdocao(Pageable pageable);
 }

@@ -17,16 +17,18 @@ melhora a produtividade do time.
  
 ##### Product Backlog 
 > Cada requisito tem um identificador único de maneira que seja possível rastrear a necessidade do cliente com a implementação do software.  
- 
+
 | Identificador | Descrição | Complexidade| 
 | ------------ | ------------------------------------------------------------------------ | ------|  
-| REQ01 Crud Animais | O sistema deve permitir manter as informações dos animais como nome, foto, sexo, data de nascimento, tipo, raça, para_adocao, descrição, cor, porte, castrado. (CRUD) | Alta | 
-| REQ02 Crud Cuidados Médicos dos Animais| O sistema deve permitir manter as informações dos cuidados médicos dos animais. Como as vacinas que ele tomou (Nome, Lote, Data, Descrição), consultas que ele realizou (Data e Descrição) e as doenças que ele possui (Nome e Gravidade). (CRUD) | Media | 
-| REQ03 Crud Cuidadores| O sistema deve permitir manter as informações dos cuidadores como nome, sobrenome, senha (Provisória), celular, data de nascimento, sexo, cpf, e-mail. (CRUD)  | Media | 
-| REQ04 Login| O sistema deve permitir que usuários sejam autenticados e posteriormente efetuem login no sistema, caso suas informações foram validas.  | Alta |
-| REQ05 Crud Doações| O sistema deve permitir manter as informações das doações como tipo_doacao, data, quantidade/valor e descricao. (CRUD).  | Alta |
-| REQ06 Visualização de Animais para Adoção | O sistema deve permitir que o usuário adotante visualize  uma lista dos animais disponíveis para adoção com as informações de nome, foto, nome, sexo, data de nascimento, idade, tipo, raça, descrição, cor, porte, castrado.  | Alta |
-| REQ07 Cadastro de Interesse de Adoção | O sistema deve permitir cadastrar o interesse de adoção com as informações de nome, sobrenome, data de nascimento, cpf, celular, e-mail, cep (Acionado a API de CEP para buscar as demais informações do CEP), número da residência e complemento. | Media |
+| REQ01 - Animais | O sistema deve permitir manter as informações dos animais como nome, sexo, data de nascimento, tipo, raça, adoção, descrição, cor, porte, castrado e imagem. (CRUD) | Alta | 
+| REQ02 - Cuidados Animais - Vacina  | O sistema deve permitir manter as informações dos cuidados médicos dos animais. Como as vacinas que ele tomou (Nome, Lote, DataAplicação, Descrição). (CRUD) | Alta | 
+| REQ03 - Cuidados Animais - Doenças | O sistema deve permitir manter as informações dos cuidados médicos dos animais. Doenças que ele possui (Nome, Gravidade, Status, Descrição). (CRUD) | Alta |
+| REQ04 - Doações | O sistema deve permitir manter as informações das doações como tipo, data, quantidade, valor e descrição. (CRUD) | Alta |
+| REQ05 - Cuidadores | O sistema deve permitir manter as informações dos cuidadores como nome, sobrenome, celular, data de nascimento, sexo, CPF, e-mail, senha. (CRUD) | Alta |
+| REQ06 - Login | O sistema deve permitir que usuários sejam autenticados e posteriormente efetuem login no sistema, caso suas informações forem validas. | Alta |
+| REQ07 - Visualização de Animais para Adoção | O sistema deve permitir que o usuário adotante visualize uma lista dos animais disponíveis para adoção com as informações de nome, foto, nome, sexo, data de nascimento, idade, tipo, raça, descrição, cor, porte, castrado. | Alta |
+| REQ08 - Cadastro de Interesse de Adoção | O sistema deve permitir cadastrar o interesse de adoção com as informações de nome, sobrenome, data de nascimento, CPF, celular, e-mail, cep (Acionado a API de CEP para buscar as demais informações do CEP), número da residência e complemento. | Média |
+| REQ09 - Dashboard | O sistema deve exibir por meio de gráficos interativos, informações sobre os animais e as doações permitindo a análise visual. | Baixa |
 
 
 ##### Definição de pronto 

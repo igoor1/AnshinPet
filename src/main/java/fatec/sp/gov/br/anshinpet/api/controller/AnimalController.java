@@ -2,12 +2,18 @@ package fatec.sp.gov.br.anshinpet.api.controller;
 
 import fatec.sp.gov.br.anshinpet.api.assembler.AnimalModelAssembler;
 import fatec.sp.gov.br.anshinpet.api.assembler.AnimalInputDisassembler;
+import fatec.sp.gov.br.anshinpet.api.assembler.PageModelAssembler;
 import fatec.sp.gov.br.anshinpet.api.dto.AnimalDTO;
+import fatec.sp.gov.br.anshinpet.api.dto.PageDTO;
 import fatec.sp.gov.br.anshinpet.api.dto.input.AnimalInput;
 import fatec.sp.gov.br.anshinpet.domain.model.Animal;
 import fatec.sp.gov.br.anshinpet.domain.service.AnimalService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +34,16 @@ public class AnimalController {
     @Autowired
     private AnimalInputDisassembler animalInputDisassembler;
 
+    @Autowired
+    private PageModelAssembler pageModelAssembler;
+
     @GetMapping
-    public List<AnimalDTO> listar(){
-        return animalModelAssembler.toCollectionModel(animalService.listar());
+    public ResponseEntity<PageDTO> listar(@PageableDefault(size = 12) Pageable pageable){
+        Page<Animal> animalPage = animalService.listar(pageable);
+        List<AnimalDTO>  animalDTO = animalModelAssembler.toCollectionModel(animalPage.getContent());
+        Page<AnimalDTO> animalDTOPage = new PageImpl<>(animalDTO, pageable, animalPage.getTotalElements());
+        PageDTO pageDTO = pageModelAssembler.toModel(animalDTOPage);
+        return ResponseEntity.ok(pageDTO);
     }
 
     @GetMapping("/{animalId}")

@@ -31,11 +31,6 @@ public class AdocaoController {
     @Autowired
     private PageModelAssembler pageModelAssembler;
 
-//    @GetMapping("/listar")
-//    public List<AnimalDTO> listar(){
-//         return animalModelAssembler.toCollectionModel(animalService.buscarAdocao());
-//    }
-
     @GetMapping("/listar")
     public ResponseEntity<PageDTO> listar(@PageableDefault(size = 12) Pageable pageable){
         Page<Animal> animalPage = animalService.buscarAdocao(pageable);
